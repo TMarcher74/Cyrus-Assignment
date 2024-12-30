@@ -2,7 +2,7 @@
 
 Game files for the assignement can be downloaded by running the follwing command in the terminal
 
-'git clone https://github.com/TMarcher74/Cyrus-Assignment.git'
+`git clone https://github.com/TMarcher74/Cyrus-Assignment.git`
 
 
 1. Make sure Unreal Engine 5.5.1 is downloaded and ready.
