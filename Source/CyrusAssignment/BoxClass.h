@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "BoxData.h"
 #include "BoxClass.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBoxDestroyed, int32, Score);
 UCLASS()
 class CYRUSASSIGNMENT_API ABoxClass : public AActor
 {
@@ -22,5 +24,31 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(BlueprintAssignable)
+    FOnBoxDestroyed OnBoxDestroyed;
+
+    void TakeDamage(int32 Damage);
+
+    void InitializeBox(const FBoxType& BoxType);
+
+protected:
+	void DestroyBox();
+
+private:
+    UPROPERTY(VisibleAnywhere)
+    UStaticMeshComponent* StaticMeshComponent;
+	
+    UPROPERTY()
+    UStaticMesh* BoxMesh;
+
+    UPROPERTY()
+    UMaterialInterface* BoxMaterial;
+
+    UPROPERTY()
+    int32 Health;
+
+    UPROPERTY()
+    int32 Score;
 
 };

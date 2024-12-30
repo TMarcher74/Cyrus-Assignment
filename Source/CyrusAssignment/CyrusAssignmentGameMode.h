@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+//#include "HttpCommunication.h"
+
 #include "CyrusAssignmentGameMode.generated.h"
 
 UCLASS(minimalapi)
@@ -13,6 +15,9 @@ class ACyrusAssignmentGameMode : public AGameModeBase
 
 public:
 	ACyrusAssignmentGameMode();
+
+protected:
+	virtual void BeginPlay() override;
 };
 
 

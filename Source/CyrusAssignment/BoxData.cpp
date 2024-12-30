@@ -3,10 +3,4 @@
 
 #include "BoxData.h"
 
-BoxData::BoxData()
-{
-}
 
-BoxData::~BoxData()
-{
-}

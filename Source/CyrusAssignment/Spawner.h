@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "BoxData.h" // To access FBoxType and FBoxObject
+#include "HttpCommunication.h" // To access UHttpCommunication
+
 #include "Spawner.generated.h"
 
 UCLASS()
@@ -12,15 +15,34 @@ class CYRUSASSIGNMENT_API ASpawner : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	ASpawner();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void SpawnBoxes(const TArray<FBoxType>& BoxTypes, const TArray<FBoxObject>& BoxObjects);
+
+protected:
+    // static mesh to use for boxes
+    UPROPERTY(EditAnywhere, Category = "Spawner")
+    UStaticMesh* BoxMesh;
+
+    // Material template for box materials
+    UPROPERTY(EditAnywhere, Category = "Spawner")
+    UMaterialInterface* BoxMaterial;
+
+    // Function to create a material instance for a given color
+    //UMaterialInstanceDynamic* CreateMaterialInstance(FLinearColor Color);
+
+private:
+    UPROPERTY()
+    UHttpCommunication* HttpComm;
+
+public:
+	UFUNCTION()
+	void OnDataReady();
 
 };

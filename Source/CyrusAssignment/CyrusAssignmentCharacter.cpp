@@ -10,6 +10,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Engine/LocalPlayer.h"
+#include "BoxClass.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -35,9 +36,16 @@ ACyrusAssignmentCharacter::ACyrusAssignmentCharacter()
 	Mesh1P->CastShadow = false;
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
+	bHasRifle = false;
+
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
+
+void ACyrusAssignmentCharacter::OnRiflePickedUp()
+{
+    bHasRifle = true;
+}
 
 void ACyrusAssignmentCharacter::NotifyControllerChanged()
 {
@@ -67,6 +75,10 @@ void ACyrusAssignmentCharacter::SetupPlayerInputComponent(UInputComponent* Playe
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACyrusAssignmentCharacter::Look);
+
+		// Shooting
+		//EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Triggered, this, &ACyrusAssignmentCharacter::Shoot);
+
 	}
 	else
 	{
@@ -98,5 +110,49 @@ void ACyrusAssignmentCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+// Called in the BP_FirstPersonCharacter blueprint
+void ACyrusAssignmentCharacter::Shoot()
+{
+    APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (!PlayerController || !bHasRifle) return;
+
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	PlayerController->GetPlayerViewPoint(CameraLocation, CameraRotation);
+
+	FVector End = CameraLocation + CameraRotation.Vector() * 10000.0f; // Adjust trace range
+
+	// Perform a line trace
+	FHitResult HitResult;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this); // Ignore the player character
+
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, CameraLocation, End, ECC_Visibility, Params))
+	{
+		// Check if the hit actor is a box
+		AActor* HitActor = HitResult.GetActor();
+		if (HitActor && HitActor->IsA(ABoxClass::StaticClass()))
+		{
+			ABoxClass* HitBox = Cast<ABoxClass>(HitActor);
+			if (HitBox)
+			{
+				// Apply damage to the box
+				HitBox->TakeDamage(1);
+
+				// Log hit details (optional)
+				UE_LOG(LogTemp, Log, TEXT("Hit box: %s"), *HitBox->GetName());
+			}
+		}
+
+		// Optional: Draw a debug line
+		// DrawDebugLine(GetWorld(), CameraLocation, HitResult.ImpactPoint, FColor::Red, false, 1.0f, 0, 1.0f);
+	}
+	else
+	{
+		// Draw a debug line for a miss
+		// DrawDebugLine(GetWorld(), CameraLocation, End, FColor::Blue, false, 1.0f, 0, 1.0f);
 	}
 }

@@ -8,6 +8,17 @@ public class CyrusAssignment : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
+		PublicDependencyModuleNames.AddRange(new string[] { 
+			"Core", 
+			"CoreUObject", 
+			"Engine", 
+			"InputCore", 
+			"EnhancedInput", 
+			"Json", 
+			"JsonUtilities",
+			"HTTP"
+		});
+
+		PrivateDependencyModuleNames.AddRange(new string[] { });
 	}
 }

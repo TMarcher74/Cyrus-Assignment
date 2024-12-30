@@ -44,6 +44,10 @@ class ACyrusAssignmentCharacter : public ACharacter
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
+
+	/** Shoot Input Action */
+	// UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	// class UInputAction* ShootAction;
 	
 public:
 	ACyrusAssignmentCharacter();
@@ -66,6 +70,17 @@ public:
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void Shoot();
+
+public:
+	void OnRiflePickedUp();
+
+private:
+    // Boolean to check if the player has the rifle
+    bool bHasRifle;
 
 };
 
