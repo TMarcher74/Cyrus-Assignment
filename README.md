@@ -1,9 +1,9 @@
 # Unreal Engine 5 Project: Cyrus-Assignment
 
 Game files for the assignement can be downloaded by running the follwing command in the terminal
-'''
-git clone https://github.com/TMarcher74/Cyrus-Assignment.git
-'''
+
+'git clone https://github.com/TMarcher74/Cyrus-Assignment.git'
+
 
 1. Make sure Unreal Engine 5.5.1 is downloaded and ready.
 2. The size of the game is close to 700Mb, after downloading it, run the CyrusAssignment.uproject, this step will take some time as the game files need to be built.
